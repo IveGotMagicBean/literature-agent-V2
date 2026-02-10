@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API测试</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px; }
+        pre { background: #f5f5f5; padding: 10px; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Literature Agent API 测试</h1>
+    
+    <div>
+        <h2>1. 测试状态接口</h2>
+        <button onclick="testStatus()">测试 /api/status</button>
+        <pre id="status-result"></pre>
+    </div>
+    
+    <div>
+        <h2>2. 测试上传</h2>
+        <input type="file" id="fileInput" accept=".pdf">
+        <button onclick="testUpload()">上传PDF</button>
+        <pre id="upload-result"></pre>
+    </div>
+    
+    <div>
+        <h2>3. 测试问答</h2>
+        <input type="text" id="questionInput" placeholder="输入问题" style="width: 300px;">
+        <button onclick="testQuery()">提问</button>
+        <pre id="query-result"></pre>
+    </div>
+    
+    <script>
+        async function testStatus() {
+            const result = document.getElementById('status-result');
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                result.className = 'success';
+                result.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                result.className = 'error';
+                result.textContent = 'Error: ' + error.message;
+            }
+        }
+        
+        async function testUpload() {
+            const result = document.getElementById('upload-result');
+            const fileInput = document.getElementById('fileInput');
+            
+            if (!fileInput.files.length) {
+                result.className = 'error';
+                result.textContent = '请先选择PDF文件';
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            
+            try {
+                result.textContent = '上传中...';
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                result.className = response.ok ? 'success' : 'error';
+                result.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                result.className = 'error';
+                result.textContent = 'Error: ' + error.message;
+            }
+        }
+        
+        async function testQuery() {
+            const result = document.getElementById('query-result');
+            const question = document.getElementById('questionInput').value;
+            
+            if (!question) {
+                result.className = 'error';
+                result.textContent = '请输入问题';
+                return;
+            }
+            
+            try {
+                result.textContent = '查询中...';
+                const response = await fetch('/api/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question })
+                });
+                const data = await response.json();
+                result.className = response.ok ? 'success' : 'error';
+                result.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                result.className = 'error';
+                result.textContent = 'Error: ' + error.message;
+            }
+        }
+        
+        // 自动测试状态
+        window.onload = () => testStatus();
+    </script>
+</body>
+</html>

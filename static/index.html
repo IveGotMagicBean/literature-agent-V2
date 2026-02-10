@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Literature Agent - 智能文献阅读助手</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="theme-dark">
+    <!-- 主容器 -->
+    <div class="app-container">
+        
+        <!-- 顶部导航 -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-book-reader"></i>
+                    <h1>Literature Agent</h1>
+                    <span class="version">v2.0</span>
+                </div>
+                
+                <div class="header-actions">
+                    <!-- 项目说明按钮 - 带文字 -->
+                    <button class="btn-with-text" id="docsBtn" title="查看项目说明">
+                        <i class="fas fa-file-alt"></i>
+                        <span>项目说明</span>
+                    </button>
+                    
+                    <!-- 演示视频按钮 - 带文字 -->
+                    <button class="btn-with-text" id="helpBtn" title="观看演示视频">
+                        <i class="fas fa-video"></i>
+                        <span>演示视频</span>
+                    </button>
+                    
+                    <a href="https://github.com/IveGotMagicBean/literature-agent-V2" 
+                       target="_blank" 
+                       class="btn-icon" 
+                       title="GitHub仓库">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    
+                    <button class="btn-icon" id="themeToggle" title="切换主题">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <div class="status-indicator" id="statusIndicator">
+                        <div class="status-dot"></div>
+                        <span>就绪</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="app-main">
+            
+            <!-- 左侧边栏 -->
+            <aside class="sidebar">
+                
+                <!-- 上传区域 -->
+                <section class="sidebar-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-file-upload"></i>
+                        PDF上传
+                    </h3>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <input type="file" id="fileInput" accept=".pdf" hidden>
+                        <div class="upload-content">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <p class="upload-text">拖拽PDF文件到这里</p>
+                            <p class="upload-subtext">或点击选择文件</p>
+                            <span class="file-format">支持最大 50MB</span>
+                        </div>
+                        <div class="upload-progress" id="uploadProgress" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <p class="progress-text">正在上传...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 示例文档按钮 -->
+                    <button class="btn-example" id="loadExampleBtn">
+                        <div class="btn-example-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="btn-example-content">
+                            <div class="btn-example-title">体验示例文档</div>
+                            <div class="btn-example-subtitle">快速了解功能</div>
+                        </div>
+                        <i class="fas fa-chevron-right btn-example-arrow"></i>
+                    </button>
+                    
+                    <div class="file-info" id="fileInfo" style="display: none;">
+                        <div class="file-name">
+                            <i class="fas fa-file-pdf"></i>
+                            <span id="fileName"></span>
+                        </div>
+                        <div class="file-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-file-alt"></i>
+                                <span id="pageCount">0</span> 页
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-image"></i>
+                                <span id="figureCount">0</span> 图
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 快捷操作 -->
+                <section class="sidebar-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-bolt"></i>
+                        快捷操作
+                    </h3>
+                    
+                    <div class="quick-actions">
+                        <button class="quick-btn" id="generatePPT" disabled>
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>生成PPT</span>
+                        </button>
+                        <button class="quick-btn" id="generateReport" disabled>
+                            <i class="fas fa-file-alt"></i>
+                            <span>生成报告</span>
+                        </button>
+                        <button class="quick-btn" id="analyzeFigures" disabled>
+                            <i class="fas fa-chart-bar"></i>
+                            <span>分析图表</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- 提示词模板 -->
+                <section class="sidebar-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-lightbulb"></i>
+                        常用提问
+                    </h3>
+                    
+                    <div class="prompt-templates">
+                        <button class="template-btn" data-prompt="这篇文章的主要贡献是什么？">
+                            主要贡献
+                        </button>
+                        <button class="template-btn" data-prompt="请总结一下实验结果">
+                            实验结果
+                        </button>
+                        <button class="template-btn" data-prompt="这篇文章使用了什么方法？">
+                            研究方法
+                        </button>
+                        <button class="template-btn" data-prompt="分析Figure 1的所有子图">
+                            图表分析
+                        </button>
+                    </div>
+                </section>
+
+            </aside>
+
+            <!-- 中间聊天区 -->
+            <div class="chat-container">
+                
+                <!-- 欢迎界面 -->
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-content">
+                        <i class="fas fa-robot welcome-icon"></i>
+                        <h2>欢迎使用 Literature Agent</h2>
+                        <p>上传PDF文献，开始智能对话</p>
+                        
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <i class="fas fa-brain"></i>
+                                <h4>智能理解</h4>
+                                <p>深度解析文献内容</p>
+                            </div>
+                            <div class="feature-card">
+                                <i class="fas fa-search"></i>
+                                <h4>精准检索</h4>
+                                <p>快速定位关键信息</p>
+                            </div>
+                            <div class="feature-card">
+                                <i class="fas fa-image"></i>
+                                <h4>图表分析</h4>
+                                <p>自动识别和分析图表</p>
+                            </div>
+                            <div class="feature-card">
+                                <i class="fas fa-file-export"></i>
+                                <h4>一键导出</h4>
+                                <p>生成PPT和研究报告</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 聊天消息区 -->
+                <div class="chat-messages" id="chatMessages" style="display: none;">
+                    <!-- 消息将在这里动态添加 -->
+                </div>
+
+                <!-- 输入区 -->
+                <div class="chat-input-container">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="chatInput" 
+                            class="chat-input" 
+                            placeholder="输入您的问题..."
+                            rows="1"
+                            disabled
+                        ></textarea>
+                        <button class="send-btn" id="sendBtn" disabled>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="input-hints">
+                        <span class="hint">
+                            <i class="fas fa-lightbulb"></i>
+                            提示：可以直接询问文献内容、生成报告或分析特定图表
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 右侧信息面板 -->
+            <aside class="info-panel" id="infoPanel">
+                
+                <div class="panel-tabs">
+                    <button class="tab-btn active" data-tab="figures">
+                        <i class="fas fa-image"></i>
+                        图表
+                    </button>
+                    <button class="tab-btn" data-tab="downloads">
+                        <i class="fas fa-download"></i>
+                        下载
+                    </button>
+                </div>
+
+                <div class="panel-content">
+                    <!-- 图表标签页 -->
+                    <div class="tab-pane active" id="figuresTab">
+                        <!-- 图表将动态添加到这里 -->
+                    </div>
+
+                    <!-- 下载标签页 -->
+                    <div class="tab-pane" id="downloadsTab">
+                        <!-- 全部下载按钮 -->
+                        <div id="downloadAllContainer" style="display: none; padding: 12px; border-bottom: 1px solid var(--border);">
+                            <button id="downloadAllBtn" class="btn-primary" style="width: 100%;">
+                                <i class="fas fa-download"></i>
+                                全部下载
+                            </button>
+                        </div>
+                        <!-- 下载项将动态添加到这里 -->
+                    </div>
+                </div>
+
+            </aside>
+
+        </main>
+
+    </div>
+
+    <!-- 加载提示 -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p id="loadingText">处理中...</p>
+        </div>
+    </div>
+
+    <!-- Toast通知 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

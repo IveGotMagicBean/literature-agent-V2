@@ -1,0 +1,48 @@
+# 配置文件示例
+# 复制此文件为 config.toml 并填入你的实际配置
+
+[llm]
+# LLM Provider: "openai", "anthropic", or "ollama"
+provider = "ollama"  # 使用本地Ollama模型
+
+# API Configuration (for openai/anthropic)
+api_key = "your-api-key-here"  # OpenAI/Anthropic需要
+model = "gpt-4"                 # 使用的模型
+base_url = ""                   # 可选：自定义API端点
+
+# Ollama Configuration (for local models)
+[llm.ollama]
+base_url = "http://localhost:11434"  # Ollama服务地址
+model = "qwen2.5:14b"                # 主模型
+vision_model = "llava:7b"            # 视觉模型（用于图像理解）
+
+# Model Parameters
+temperature = 0.7
+max_tokens = 4000
+
+[system]
+# Data Directory
+data_dir = "./data"
+
+# Upload Settings
+upload_dir = "./uploads"
+max_file_size = 50  # MB
+
+# Processing
+auto_analyze = true            # 上传后自动分析
+auto_split_figures = true      # 自动分割子图
+
+[generation]
+# PPT Settings
+default_ppt_style = "academic"
+default_language = "中文"
+max_slides = 20
+
+# Report Settings
+default_report_format = "Word"
+include_figures = true
+max_figures_in_report = 10
+
+[ui]
+# Theme
+default_theme = "dark"  # "light" or "dark"

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>输入框测试</title>
+    <style>
+        body { padding: 20px; font-family: Arial; }
+        .test-box { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        textarea { width: 100%; padding: 10px; }
+        button { padding: 10px 20px; margin: 10px 5px; }
+    </style>
+</head>
+<body>
+    <h1>输入框测试</h1>
+    
+    <div class="test-box">
+        <h2>测试1: 默认启用的输入框</h2>
+        <textarea id="input1" placeholder="这个输入框应该可以输入"></textarea>
+        <p>状态: <span id="status1">-</span></p>
+    </div>
+    
+    <div class="test-box">
+        <h2>测试2: 默认禁用的输入框</h2>
+        <textarea id="input2" placeholder="这个输入框默认禁用" disabled></textarea>
+        <button onclick="enableInput2()">启用输入框</button>
+        <p>状态: <span id="status2">-</span></p>
+    </div>
+    
+    <div class="test-box">
+        <h2>测试3: 模拟主页面输入框</h2>
+        <textarea id="chatInput" placeholder="模拟主页面" disabled></textarea>
+        <button id="sendBtn" disabled>发送</button>
+        <br>
+        <button onclick="simulateUpload()">模拟PDF上传完成</button>
+        <p>状态: <span id="status3">-</span></p>
+    </div>
+    
+    <script>
+        // 测试1
+        document.getElementById('status1').textContent = 
+            document.getElementById('input1').disabled ? '禁用' : '启用';
+        
+        // 测试2
+        function updateStatus2() {
+            document.getElementById('status2').textContent = 
+                document.getElementById('input2').disabled ? '禁用' : '启用';
+        }
+        updateStatus2();
+        
+        function enableInput2() {
+            const input = document.getElementById('input2');
+            input.disabled = false;
+            input.removeAttribute('disabled');
+            updateStatus2();
+            input.focus();
+        }
+        
+        // 测试3
+        function updateStatus3() {
+            const input = document.getElementById('chatInput');
+            const btn = document.getElementById('sendBtn');
+            document.getElementById('status3').textContent = 
+                `输入框: ${input.disabled ? '禁用' : '启用'}, 按钮: ${btn.disabled ? '禁用' : '启用'}`;
+        }
+        updateStatus3();
+        
+        function simulateUpload() {
+            console.log('模拟上传完成，启用输入框...');
+            
+            const chatInput = document.getElementById('chatInput');
+            const sendBtn = document.getElementById('sendBtn');
+            
+            // 方法1: 直接设置属性
+            chatInput.disabled = false;
+            sendBtn.disabled = false;
+            
+            // 方法2: 移除属性
+            chatInput.removeAttribute('disabled');
+            sendBtn.removeAttribute('disabled');
+            
+            // 聚焦
+            chatInput.focus();
+            
+            updateStatus3();
+            
+            console.log('输入框状态:', chatInput.disabled);
+            console.log('按钮状态:', sendBtn.disabled);
+        }
+        
+        // 每秒更新状态
+        setInterval(() => {
+            updateStatus2();
+            updateStatus3();
+        }, 1000);
+    </script>
+</body>
+</html>

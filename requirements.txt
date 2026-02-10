@@ -1,0 +1,33 @@
+# Web Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-multipart==0.0.6
+
+# Basic HTTP (for Ollama)
+requests==2.31.0
+
+# AI & LLM (Optional - install as needed)
+# For OpenAI:
+# openai==1.10.0
+# For Anthropic:
+# anthropic==0.18.1
+
+# PDF Processing
+PyMuPDF==1.23.0
+pdfplumber==0.11.0
+pdf2image==1.17.0
+
+# Image Processing
+opencv-python==4.9.0.80
+Pillow==10.2.0
+numpy==1.26.3
+
+# Document Generation
+python-pptx==0.6.23
+python-docx==1.1.0
+reportlab==4.0.9
+markdown==3.5.2
+
+# Utilities
+toml==0.10.2
+aiofiles==23.2.1
