@@ -1,0 +1,57 @@
+# 配置文件示例
+# 复制此文件为 config.toml 并填入你的实际配置
+
+[llm]
+# LLM Provider: "openai", "anthropic", "ollama", or "dashscope"
+# 推荐使用 dashscope（阿里云百炼），速度快、中文能力强
+provider = "dashscope"
+
+# API Configuration (for openai/anthropic)
+api_key = "your-api-key-here"
+model = "gpt-4"
+base_url = ""
+
+# Ollama Configuration (for local models)
+[llm.ollama]
+base_url = "http://localhost:11434"
+model = "qwen2.5:14b"
+vision_model = "llava:7b"
+
+# DashScope (阿里云百炼) Configuration
+# 使用 OpenAI 兼容模式，获取API Key: https://dashscope.console.aliyun.com/apiKey
+[llm.dashscope]
+api_key = "your-dashscope-api-key-here"
+base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+model = "qwen-plus"              # 主模型（推荐 qwen-plus 或 qwen-max）
+vision_model = "qwen-vl-max"     # 视觉模型（用于图像理解）
+
+# Model Parameters
+temperature = 0.7
+max_tokens = 4000
+
+[system]
+# Data Directory
+data_dir = "./data"
+
+# Upload Settings
+upload_dir = "./uploads"
+max_file_size = 50  # MB
+
+# Processing
+auto_analyze = true            # 上传后自动分析
+auto_split_figures = true      # 自动分割子图
+
+[generation]
+# PPT Settings
+default_ppt_style = "academic"
+default_language = "中文"
+max_slides = 20
+
+# Report Settings
+default_report_format = "Word"
+include_figures = true
+max_figures_in_report = 10
+
+[ui]
+# Theme
+default_theme = "dark"  # "light" or "dark"
