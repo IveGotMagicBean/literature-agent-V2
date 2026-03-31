@@ -2,13 +2,9 @@
 
 > 面向复杂学术场景的多模态知识自动化系统
 
-![banner](./static/README_figures/0.png)
+- **作者**：Lindsey
 
-- **作者**：林诗逸
-
-🌐 **项目主页**：<!-- TODO: 填入项目主页链接 -->  
-🎬 **演示视频**：<!-- TODO: 填入视频链接 -->  
-🚀 **在线体验**：https://shiny-glitter-e495.542058929.workers.dev/
+🚀 **在线体验**：https://shiny-glitter-e495.542058929.workers.dev/ <br/>
 📦 **GitHub**：https://github.com/IveGotMagicBean/literature-agent-V2
 
 ![UI](./static/README_figures/1.png)
@@ -315,7 +311,6 @@ MIT License
 
 感谢以下开源项目：FastAPI · PyMuPDF · python-pptx · python-docx · Ollama · figure-separator
 
-![footer](./static/README_figures/0.png)
 <figure align="center">
   <figcaption style="text-align: center;">
     <b>Literature Agent — 让文献阅读更智能！</b> 📚✨
